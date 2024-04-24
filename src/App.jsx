@@ -109,8 +109,7 @@ function App() {
         },
     ];
 
-const [open, setOpen] = useState(null);
-    const [isSecondAccordionEditable, setIsSecondAccordionEditable] = useState(false);
+    const [open, setOpen] = useState(null);
 
     const toggle = (index) => {
         setOpen(open === index ? null : index);
@@ -127,8 +126,6 @@ const [open, setOpen] = useState(null);
                             toggle={() => toggle(index)}
                             title={data.title}
                             desc={data.content}
-                            isFirstAccordion={index === 0} // Set isFirstAccordion to true only for the first accordion
-                            onToggleSecondAccordion={setIsSecondAccordionEditable} // Pass the function to control editability of the second accordion
                         />
                     ))}
                 </div>
