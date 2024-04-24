@@ -2,17 +2,15 @@ import { useState, useEffect } from "react";
 import { Collapse } from "react-collapse";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 
-const AccordionItem = ({ open, toggle, title, desc }) => {
+const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
     const [showBtn, setShowBtn] = useState(false);
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
-        // Load data from localStorage when component mounts
-        const savedData = localStorage.getItem(`accordion_${title}`);
+        const savedData = localStorage.getItem(index);
         if (savedData) {
             setFormData(JSON.parse(savedData));
         } else {
-            // Set default values to "No" for all questions
             const defaultFormData = {};
             desc.forEach((data, index) => {
                 defaultFormData[index] = "No";
@@ -27,15 +25,14 @@ const AccordionItem = ({ open, toggle, title, desc }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Save form data to localStorage
-        localStorage.setItem(`accordion_${title}`, JSON.stringify(formData));
+        localStorage.setItem(index, JSON.stringify(formData));
         setShowBtn(false);
     };
 
     const handleChange = (index, value) => {
         setFormData({
             ...formData,
-            [index]: value
+            [index]: value,
         });
     };
 
@@ -59,6 +56,7 @@ const AccordionItem = ({ open, toggle, title, desc }) => {
                                             value="Yes"
                                             onChange={() => handleChange(index, "Yes")}
                                             checked={formData[index] === "Yes"}
+                                            disabled={!editable}
                                         />
                                         <span>Yes</span>
                                     </label>
@@ -69,6 +67,7 @@ const AccordionItem = ({ open, toggle, title, desc }) => {
                                             value="No"
                                             onChange={() => handleChange(index, "No")}
                                             checked={formData[index] === "No"}
+                                            disabled={!editable}
                                         />
                                         <span>No</span>
                                     </label>
@@ -79,6 +78,7 @@ const AccordionItem = ({ open, toggle, title, desc }) => {
                                             value="NA"
                                             onChange={() => handleChange(index, "NA")}
                                             checked={formData[index] === "NA"}
+                                            disabled={!editable}
                                         />
                                         <span>NA</span>
                                     </label>
@@ -87,13 +87,12 @@ const AccordionItem = ({ open, toggle, title, desc }) => {
                         ))}
                         {showBtn ? (
                             <div className="flex gap-4 mt-7">
-                                <button
-                                    type="submit"
-                                    className="border py-1 px-3 rounded-md text-red-500"
-                                >
+                                <button type="submit" className="border py-1 px-3 rounded-md text-red-500">
                                     Save
                                 </button>
-                                <button type="button" onClick={() => setShowBtn(false)}>Cancel</button>
+                                <button type="button" onClick={() => setShowBtn(false)}>
+                                    Cancel
+                                </button>
                             </div>
                         ) : null}
                     </form>

@@ -110,9 +110,38 @@ function App() {
     ];
 
     const [open, setOpen] = useState(null);
+    const [editable, setEditable] = useState(false);
 
-    const toggle = (index) => {
+    const toggle = (index, title) => {
         setOpen(open === index ? null : index);
+        if (index == 0) {
+            setEditable(true);
+        } else {
+            setEditable(false);
+        }
+        let currentIndex = index;
+
+        while (currentIndex > 0) {
+            const savedData = localStorage.getItem(currentIndex - 1);
+
+            if (savedData) {
+                const previousFormData = JSON.parse(savedData);
+                const allValuesYesOrNA = Object.values(previousFormData).every(
+                    (value) => value === "Yes" || value === "NA"
+                );
+                if (allValuesYesOrNA) {
+                    setEditable(true);
+                } else {
+                    setEditable(false);
+                    break;
+                }
+            } else {
+                setEditable(false);
+                break;
+            }
+
+            currentIndex--;
+        }
     };
 
     return (
@@ -126,6 +155,8 @@ function App() {
                             toggle={() => toggle(index)}
                             title={data.title}
                             desc={data.content}
+                            editable={editable}
+                            index={index}
                         />
                     ))}
                 </div>
