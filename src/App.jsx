@@ -144,10 +144,17 @@ function App() {
         }
     };
 
+    const clearLocalStorage = () => {
+        localStorage.clear();
+    };
+
     return (
         <div className="">
             <section className="bg-[#F6F6F6] text-white h-screen grid place-items-center">
                 <div className="px-[40px] max-w-7xl">
+                    <button onClick={clearLocalStorage} className="mb-4 bg-blue-500 text-white px-4 text-sm py-2 rounded-md">
+                        Clear Local Storage
+                    </button>
                     {accordionData.map((data, index) => (
                         <AccordionItem
                             key={data.id}

@@ -17,7 +17,7 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
             });
             setFormData(defaultFormData);
         }
-    }, [title, desc]);
+    }, [title, desc, index]);
 
     const handleForm = () => {
         setShowBtn(true);
