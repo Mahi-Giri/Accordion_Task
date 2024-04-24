@@ -138,7 +138,7 @@ const App = () => {
     return (
         <div>
             <section className="bg-[#F6F6F6] text-white h-screen grid place-items-center">
-                <div className="px-[40px] max-w-7xl">
+                <div className="px-5 max-w-7xl">
                     <button
                         onClick={clearLocalStorage}
                         className="mb-4 bg-blue-500 text-white px-4 text-sm py-2 rounded-md"
