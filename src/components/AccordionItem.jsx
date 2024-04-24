@@ -17,11 +17,9 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
             });
             setFormData(defaultFormData);
         }
-    }, [title, desc, index]);
+    }, [desc, index]);
 
-    const handleForm = () => {
-        setShowBtn(true);
-    };
+    const handleForm = () => setShowBtn(true);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,10 +28,10 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
     };
 
     const handleChange = (index, value) => {
-        setFormData({
-            ...formData,
+        setFormData((prevState) => ({
+            ...prevState,
             [index]: value,
-        });
+        }));
     };
 
     return (
@@ -49,43 +47,23 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
                             <div key={index}>
                                 <p className="text-md pt-5 font-bold">{data.Que}</p>
                                 <div className="flex gap-4 text-sm pt-1 px-4">
-                                    <label className="flex gap-2">
-                                        <input
-                                            type="radio"
-                                            name={`answer_${index}`}
-                                            value="Yes"
-                                            onChange={() => handleChange(index, "Yes")}
-                                            checked={formData[index] === "Yes"}
-                                            disabled={!editable}
-                                        />
-                                        <span>Yes</span>
-                                    </label>
-                                    <label className="flex gap-2">
-                                        <input
-                                            type="radio"
-                                            name={`answer_${index}`}
-                                            value="No"
-                                            onChange={() => handleChange(index, "No")}
-                                            checked={formData[index] === "No"}
-                                            disabled={!editable}
-                                        />
-                                        <span>No</span>
-                                    </label>
-                                    <label className="flex gap-2">
-                                        <input
-                                            type="radio"
-                                            name={`answer_${index}`}
-                                            value="NA"
-                                            onChange={() => handleChange(index, "NA")}
-                                            checked={formData[index] === "NA"}
-                                            disabled={!editable}
-                                        />
-                                        <span>NA</span>
-                                    </label>
+                                    {["Yes", "No", "NA"].map((option) => (
+                                        <label key={option} className="flex gap-2">
+                                            <input
+                                                type="radio"
+                                                name={`answer_${index}`}
+                                                value={option}
+                                                onChange={() => handleChange(index, option)}
+                                                checked={formData[index] === option}
+                                                disabled={!editable}
+                                            />
+                                            <span>{option}</span>
+                                        </label>
+                                    ))}
                                 </div>
                             </div>
                         ))}
-                        {showBtn ? (
+                        {showBtn && (
                             <div className="flex gap-4 mt-7">
                                 <button type="submit" className="border py-1 px-3 rounded-md text-red-500">
                                     Save
@@ -94,7 +72,7 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
                                     Cancel
                                 </button>
                             </div>
-                        ) : null}
+                        )}
                     </form>
                 </div>
             </Collapse>

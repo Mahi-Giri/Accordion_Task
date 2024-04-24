@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AccordionItem from "./components/AccordionItem";
 
 function App() {
@@ -112,19 +112,22 @@ function App() {
     const [open, setOpen] = useState(null);
     const [editable, setEditable] = useState(false);
 
-    const toggle = (index, title) => {
+    const toggle = (index) => {
         setOpen(open === index ? null : index);
-        if (index == 0) {
-            setEditable(true);
-        } else {
-            setEditable(false);
-        }
-        let currentIndex = index;
+    };
 
-        while (currentIndex > 0) {
-            const savedData = localStorage.getItem(currentIndex - 1);
+    const clearLocalStorage = () => {
+        localStorage.clear();
+    };
 
-            if (savedData) {
+    useEffect(() => {
+        const checkEditable = () => {
+            for (let i = open; i > 0; i--) {
+                const savedData = localStorage.getItem(i - 1);
+                if (!savedData) {
+                    setEditable(false);
+                    return;
+                }
                 const previousFormData = JSON.parse(savedData);
                 const allValuesYesOrNA = Object.values(previousFormData).every(
                     (value) => value === "Yes" || value === "NA"
@@ -133,26 +136,23 @@ function App() {
                     setEditable(true);
                 } else {
                     setEditable(false);
-                    break;
+                    return;
                 }
-            } else {
-                setEditable(false);
-                break;
             }
+            setEditable(true);
+        };
 
-            currentIndex--;
-        }
-    };
-
-    const clearLocalStorage = () => {
-        localStorage.clear();
-    };
+        checkEditable();
+    }, [open]);
 
     return (
         <div className="">
             <section className="bg-[#F6F6F6] text-white h-screen grid place-items-center">
                 <div className="px-[40px] max-w-7xl">
-                    <button onClick={clearLocalStorage} className="mb-4 bg-blue-500 text-white px-4 text-sm py-2 rounded-md">
+                    <button
+                        onClick={clearLocalStorage}
+                        className="mb-4 bg-blue-500 text-white px-4 text-sm py-2 rounded-md"
+                    >
                         Clear Local Storage
                     </button>
                     {accordionData.map((data, index) => (
