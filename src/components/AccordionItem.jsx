@@ -34,12 +34,11 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
         }));
     };
 
-    const handleReset = () => {
+    const handleCancel = () => {
         setShowBtn(false);
-        const defaultFormData = {};
-        desc.forEach((data, index) => {
-            defaultFormData[index] = "No";
-        });
+        const savedData = JSON.parse(localStorage.getItem(index)) || {};
+        const defaultFormData = Object.assign({}, savedData);
+
         setFormData(defaultFormData);
     };
 
@@ -77,8 +76,8 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
                                 <button type="submit" className="border py-1 px-3 rounded-md text-red-500">
                                     Save
                                 </button>
-                                <button type="button" onClick={handleReset}>
-                                    Reset
+                                <button type="button" onClick={handleCancel}>
+                                    Cancel
                                 </button>
                             </div>
                         )}
