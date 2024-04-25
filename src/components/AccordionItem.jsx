@@ -34,6 +34,15 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
         }));
     };
 
+    const handleReset = () => {
+        setShowBtn(false);
+        const defaultFormData = {};
+        desc.forEach((data, index) => {
+            defaultFormData[index] = "No";
+        });
+        setFormData(defaultFormData);
+    };
+
     return (
         <div className="pt-2 text-black">
             <div className="bg-white py-4 px-4 flex justify-between items-center cursor-pointer" onClick={toggle}>
@@ -68,8 +77,8 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
                                 <button type="submit" className="border py-1 px-3 rounded-md text-red-500">
                                     Save
                                 </button>
-                                <button type="button" onClick={() => setShowBtn(false)}>
-                                    Cancel
+                                <button type="button" onClick={handleReset}>
+                                    Reset
                                 </button>
                             </div>
                         )}
