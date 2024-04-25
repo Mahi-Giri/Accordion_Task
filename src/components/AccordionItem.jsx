@@ -34,12 +34,25 @@ const AccordionItem = ({ open, toggle, title, desc, editable, index }) => {
         }));
     };
 
+    function isEmptyObject(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
     const handleCancel = () => {
         setShowBtn(false);
         const savedData = JSON.parse(localStorage.getItem(index)) || {};
-        const defaultFormData = Object.assign({}, savedData);
 
-        setFormData(defaultFormData);
+        if (isEmptyObject(savedData)) {
+            const defaultFormData = {};
+            desc.forEach((data, index) => {
+                defaultFormData[index] = "No";
+            });
+
+            setFormData(defaultFormData);
+        } else {
+            const defaultFormData = Object.assign({}, savedData);
+            setFormData(defaultFormData);
+        }
     };
 
     return (
