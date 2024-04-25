@@ -116,22 +116,23 @@ const App = () => {
 
     const clearLocalStorage = () => localStorage.clear();
 
-    useEffect(() => {
-        const checkEditable = () => {
-            let canEdit = true;
-            for (let i = open; i > 0; i--) {
-                const savedData = localStorage.getItem(i - 1);
-                if (
-                    !savedData ||
-                    !Object.values(JSON.parse(savedData)).every((value) => value === "Yes" || value === "NA")
-                ) {
-                    canEdit = false;
-                    break;
-                }
+    const checkEditable = () => {
+        let canEdit = true;
+        for (let i = open; i > 0; i--) {
+            const savedData = localStorage.getItem(i - 1);
+            console.log(Object.values(JSON.parse(savedData)));
+            if (
+                !savedData ||
+                !Object.values(JSON.parse(savedData)).every((value) => value === "Yes" || value === "NA")
+            ) {
+                canEdit = false;
+                break;
             }
-            setEditable(canEdit);
-        };
+        }
+        setEditable(canEdit);
+    };
 
+    useEffect(() => {
         checkEditable();
     }, [open]);
 
